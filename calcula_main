@@ -1,0 +1,54 @@
+from datetime import datetime
+from xmlrpc.client import boolean
+from calcula_conexao import criar_conexao, fechar_conexao
+
+
+def insere_entradas(con, valor, data, nome, recorrente):
+
+    valor_entradas = float(input('Valor da conta:'))
+    data_entradas = str(input('Digite a data: '))
+    nome_entradas = str(input('Nome da conta: '))
+    recorrente_entradas = str(input('Recorrente ou não recorrente:'))
+    cursor = con.cursor()
+    entradas_sql = "INSERT INTO ENTRADAS (valor, data, nome, recorrente) values (%s, %s, %s, %s)"
+    input_entradas = (valor_entradas, data_entradas, nome_entradas, recorrente_entradas)
+    cursor.execute(entradas_sql, input_entradas)
+    con.commit()
+    print('Dados inseirdos com sucesso!')
+    cursor.close()
+
+
+def insere_saidas(con, valor, vencimento, nome, recorrente):
+    
+    valor_saida = float(input('Valor da saida: '))
+    data_saida = str(input('Data da saida: '))
+    nome_saida = str(input('Descrição da saida: '))
+    recorrente_saida = str(input('Recorrente ou não recorrente:'))
+    cursor = con.cursor()
+    saida_sql = 'INSERT INTO PAGAMENTO (valor, data, descricao) values (%s, %s, %s,%s)'
+    input_saida = (valor_saida, data_saida, nome_saida, recorrente_saida)
+    cursor.execute(saida_sql, input_saida)
+    con.commit()
+    print('Dados inseirdos com sucesso!')
+    cursor.close()
+  
+        
+
+
+    
+
+
+def main():
+    con = criar_conexao("localhost", "root", "", "calcula_python")
+
+    insere_entradas(con, "", "", "", "")
+
+    
+
+    insere_saidas(con, '', '', '','','')
+
+    fechar_conexao(con)
+
+
+if __name__ == "__main__":
+    main()
