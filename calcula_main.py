@@ -1,4 +1,3 @@
-from datetime import datetime
 from xmlrpc.client import boolean
 from calcula_conexao import criar_conexao, fechar_conexao
 
@@ -17,7 +16,7 @@ def insere_entradas(con, valor, data, nome, recorrente):
     input_entradas = (valor_entradas, data_entradas, nome_entradas, recorrente_entradas)
     cursor.execute(entradas_sql, input_entradas)
     con.commit()
-    print('Dados inseirdos com sucesso!')
+    print('valores de entradas inseirdos com sucesso!')
     cursor.close()
 
 
@@ -32,23 +31,40 @@ def insere_saidas(con, valor, vencimento, nome, recorrente):
     input_saida = (valor_saida, data_saida, nome_saida, recorrente_saida)
     cursor.execute(saida_sql, input_saida)
     con.commit()
-    print('Dados inseirdos com sucesso!')
+    print('valores de saídas inseirdos com sucesso!')
     cursor.close()
+
+def insere_ganhos(con, entrada_ganhos, descricao_ganhos):
+    valor_ganhos = float(input('Digite o valor do ganho: '))
+    descricao_ganho = str(input('Descrição da entrada do ganho: '))
+    cursor = con.cursor()
+    ganhos_sql = 'INSERT INTO GANHOS (entrada_ganhos, descricao_ganhos) values (%s, %s)'
+    input_ganhos = (valor_ganhos, descricao_ganho)
+    cursor.execute(ganhos_sql, input_ganhos)
+    con.commit()
+    print('Ganhos adicionados com sucesso!')
+    cursor.close()
+
 
 
 def main():
     con = criar_conexao("localhost", "root", "", "calcula_python")
-    print(''' Digit a opção desejada:
+    print(''' Digite a opção desejada:
     [1] entradas
-    [2] saidas''')
+    [2] saidas
+    [3] ganhos''')
     opcao = int(input('Qual opção você deseja? '))
     if opcao == 1:
         insere_entradas(con, "", "", "", "")
     elif opcao == 2:
         insere_saidas(con, '', '', '', '')
+    elif opcao == 3:
+        insere_ganhos(con, '', '')
+
     
     fechar_conexao(con)
 
 
 if __name__ == "__main__":
     main()
+
