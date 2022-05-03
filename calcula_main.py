@@ -1,3 +1,5 @@
+import pandas as pd
+from datetime import datetime
 from calcula_conexao import criar_conexao, fechar_conexao
 
 
@@ -5,6 +7,11 @@ def insere_entradas(con, valor, data, nome, recorrente):
 
     valor_entradas = float(input('Valor da conta:'))
     data_entradas = str(input('Digite a data: '))
+    data_format = datetime.strptime(data_entradas,'%d-%m-%Y')
+    
+
+    
+    
     nome_entradas = str(input('Nome da conta: '))
     recorrente_entradas = str(input('Recorrente: ')).strip().upper()
     if recorrente_entradas in 'Ss':
@@ -13,7 +20,7 @@ def insere_entradas(con, valor, data, nome, recorrente):
         recorrente_entradas = 0
     cursor = con.cursor()
     entradas_sql = "INSERT INTO ENTRADAS (valor, data, nome, recorrente) values (%s, %s, %s, %s)"
-    input_entradas = (valor_entradas, data_entradas, nome_entradas, recorrente_entradas)
+    input_entradas = (valor_entradas, data_format, nome_entradas, recorrente_entradas)
     cursor.execute(entradas_sql, input_entradas)
     con.commit()
     print('valores de entradas inseridos com sucesso!')
@@ -38,18 +45,36 @@ def insere_saidas(con, valor, vencimento, nome, recorrente):
     print('valores de saídas inseridos com sucesso!')
     cursor.close()
 
+def consulta_entradas(con, valor, data, nome, recorrente):
+    
+    consulta_entradas1 = 'SELECT * FROM entradas'
+   
 
-
+    cursor = con.cursor()
+    cursor.execute(consulta_entradas1)
+    
+    colunas = cursor.fetchall()
+    for coluna in colunas:
+        print(valor,'valor:',coluna[0],'R$')
+        print(data, coluna[1])
+        print(nome,'nome:', coluna[2])
+        print(recorrente, coluna[3])
+        
+    
 def main():
     con = criar_conexao("localhost", "root", "", "calcula_python")
     print('''Digite a opção desejada:
     [1] entradas
-    [2] saidas''')
+    [2] saidas
+    [3] consulta de dados
+    ''')
     opcao = int(input('Qual opção você deseja? '))
     if opcao == 1:
         insere_entradas(con, "", "", "", "")
     elif opcao == 2:
         insere_saidas(con, '', '', '', '')
+    elif opcao == 3:
+        consulta_entradas(con,'' ,'' , '' , '')
     
 
     
