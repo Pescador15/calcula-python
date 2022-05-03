@@ -1,9 +1,6 @@
 from calcula_conexao import criar_conexao, fechar_conexao
 
 
-    
-
-
 def insere_entradas(con, valor, data, nome, recorrente):
 
     valor_entradas = float(input('Valor da conta:'))
@@ -61,5 +58,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
