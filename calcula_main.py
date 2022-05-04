@@ -31,6 +31,7 @@ def insere_saidas(con, valor, vencimento, nome, recorrente):
 
     valor_saida = float(input('Valor da saida: '))
     data_saida = str(input('Data da saida: '))
+    data_format1 = datetime.strptime(data_saida, '%d-%m%Y')
     nome_saida = str(input('Descrição da saida: '))
     recorrente_saida = str(input('recorrente: ')).strip().upper()
     if recorrente_saida in 'sS':
@@ -39,7 +40,7 @@ def insere_saidas(con, valor, vencimento, nome, recorrente):
         recorrente_saida = 0
     cursor = con.cursor()
     saida_sql = 'INSERT INTO SAIDAS (valor, vencimento, nome, recorrente) values (%s, %s, %s, %s)'
-    input_saida = (valor_saida, data_saida, nome_saida, recorrente_saida)
+    input_saida = (valor_saida, data_format1, nome_saida, recorrente_saida)
     cursor.execute(saida_sql, input_saida)
     con.commit()
     print('valores de saídas inseridos com sucesso!')
@@ -51,7 +52,7 @@ def consulta_entradas(con, valor, data, nome, recorrente):
    
 
     cursor = con.cursor()
-    cursor.execute(consulta_entradas1)
+    cursor.execute(consulta_entradas1,datas)
     
     colunas = cursor.fetchall()
     for coluna in colunas:
@@ -83,4 +84,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
