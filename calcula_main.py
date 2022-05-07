@@ -44,10 +44,10 @@ def insere_saidas(con, valor, vencimento, nome, recorrente):
 
 def consulta_entradas(con, valor, data, nome, recorrente):
     cursor = con.cursor()
-    input_filtro = str(input('Nome da conta: ')).strip()
-    cursor.execute('SELECT * FROM entradas WHERE nome=' + input_filtro)
+    input_filtro = str(input('Nome da conta: '))
+    cursor.execute("SELECT * FROM entradas WHERE nome='"+input_filtro+"'")
     colunas = cursor.fetchall()
-    for coluna in colunas:
+    for coluna in colunas: 
         print(valor,'valor:',coluna[0],'R$')
         print(data, coluna[1])
         print(nome,'nome:', coluna[2])
@@ -56,8 +56,9 @@ def consulta_entradas(con, valor, data, nome, recorrente):
 
 
 def consulta_saidas(con, valor, vencimento, nome, recorrente):
+   
     input_filtro_saidas = str(input('Nome da conta: '))
-    consulta_saidas1 = 'SELECT * FROM saidas WHERE nome=' + input_filtro_saidas
+    consulta_saidas1 = ("SELECT * FROM saidas WHERE nome='"+input_filtro_saidas+"'" )
     cursor = con.cursor()
     cursor.execute(consulta_saidas1)
     colunas = cursor.fetchall()
