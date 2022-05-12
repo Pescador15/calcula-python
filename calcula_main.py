@@ -1,3 +1,4 @@
+
 import pandas as pd
 from datetime import datetime
 from calcula_conexao import criar_conexao, fechar_conexao
@@ -8,7 +9,7 @@ def insere_entradas(con, valor, data, nome, recorrente):
     valor_entradas = float(input('Valor da conta:'))
     data_entradas = str(input('Digite a data: '))
     data_format = datetime.strptime(data_entradas,'%d-%m-%Y')
-    nome_entradas = str(input('Nome da conta: '))
+    nome_entradas = str(input('Nome da Entrada: '))
     recorrente_entradas = str(input('Recorrente: ')).strip().upper()
     if recorrente_entradas in 'Ss':
         recorrente_entradas = 1
@@ -42,6 +43,10 @@ def insere_saidas(con, valor, vencimento, nome, recorrente):
     print('valores de saídas inseridos com sucesso!')
     cursor.close()
 
+
+
+
+
 def consulta_entradas(con, valor, data, nome, recorrente):
     cursor = con.cursor()
     input_filtro = str(input('Nome da conta: '))
@@ -69,6 +74,18 @@ def consulta_saidas(con, valor, vencimento, nome, recorrente):
         print(recorrente,coluna[3])
 
 
+def consulta_pagamento(con):
+    cursor = con.cursor()
+    consulta = ("SELECT id_entradas entradas INNER JOIN saidas ON entradas.id_entradas = saidas.id_saidas")   
+    cursor.execute(consulta)
+    colunas = cursor.fetchall()
+    for coluna in colunas:
+        print(id_entradas)
+        print(id_saidas)
+        
+
+
+
 
 
 def main():
@@ -79,6 +96,7 @@ def main():
     [2] saidas
     [3] consulta de dados de entrada
     [4] consulta de dados de saída
+    [5] consulta pagamento
     ''')
     opcao = int(input('Qual opção você deseja? '))
     if opcao == 1:
@@ -89,6 +107,8 @@ def main():
         consulta_entradas(con,'' ,'' , '' , '')
     elif opcao == 4: 
         consulta_saidas(con, '', '', '', '')
+    elif opcao == 5:
+        consulta_pagamento(con)
     
     
 
