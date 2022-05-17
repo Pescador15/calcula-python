@@ -100,34 +100,34 @@ def insere_pagamento(con, valor, data, descricao, id_saidas, id_entradas, pago):
 
 def main():
 
-    con = criar_conexao("localhost", "root", "", "calcula_python")
-    print('''Digite a opção desejada:
-    [1] inserir entradas
-    [2] inserir saidas
-    [3] consulta de dados de entrada
-    [4] consulta de dados de saída
-    [5] inserir pagamento
-    [6] consultar todas as saidas
-    ''')
-    opcao = int(input('Qual opção você deseja? '))
-    if opcao == 1:
-        insere_entradas(con, "", "", "", "")
-    elif opcao == 2:
-        insere_saidas(con, '', '', '', '')
-    elif opcao == 3:
-        consulta_entradas(con, '', '', '', '')
-    elif opcao == 4:
-        consulta_saidas(con, '', '', '', '')
-    elif opcao == 5:
-        insere_pagamento(con,'','','','','','')
-    elif opcao == 6:
-        consulta_todas_saidas(con,'','','','','')
-
-    fechar_conexao(con)
-
-
+    while True:
+        con = criar_conexao("localhost", "root", "", "calcula_python")
+        print('''Digite a opção desejada:
+        [1] inserir entradas
+        [2] inserir saidas
+        [3] consulta de dados de entrada
+        [4] consulta de dados de saída
+        [5] inserir pagamento
+        [6] consultar todas as saidas
+        [7] sair do programa
+        ''')
+        
+        opcao = int(input('Qual opção você deseja? '))
+        if opcao == 1:
+            insere_entradas(con, "", "", "", "")
+        elif opcao == 2:
+            insere_saidas(con, '', '', '', '')
+        elif opcao == 3:
+            consulta_entradas(con, '', '', '', '')
+        elif opcao == 4:
+            consulta_saidas(con, '', '', '', '')
+        elif opcao == 5:
+            insere_pagamento(con,'','','','','','')
+        elif opcao == 6:
+            consulta_todas_saidas(con,'','','','','')
+        elif opcao == 7:
+            print('Muito Obrigado, volte sempre!')
+            break
+            
+        fechar_conexao(con)
 if __name__ == "__main__":
-    main()
-
-
-
