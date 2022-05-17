@@ -1,3 +1,4 @@
+
 import pandas as pd
 from datetime import datetime
 from calcula_conexao import criar_conexao, fechar_conexao
@@ -41,16 +42,33 @@ def insere_saidas(con, valor, vencimento, nome, recorrente):
     cursor.close()
 
 
-def consulta_entradas(con, valor, data, nome, recorrente):
+def insere_pagamento(con, valor, data, descricao, id_saidas, id_entradas, pago):
+    valor_pagamento = float(input('Valor do pagamento: '))
+    data_pagamento = str(input('Data do pagamento: '))
+    data_format_pagamento = datetime.strptime(data_pagamento, '%d-%m-%Y')
+    descricao_pagamento = str(input('Descrição do pagamento: '))
+    input_id_saidas = int(input('ID da saida: '))
+    input_id_entradas = int(input('ID da entrada:'))
+    input_pago = str(input('Pago [sim/nao]: '))
     cursor = con.cursor()
-    input_filtro = str(input('Nome da conta: '))
-    cursor.execute("SELECT * FROM entradas WHERE nome='"+input_filtro+"'")
+    pagamento_sql = 'INSERT INTO pagamento (valor, data, descricao, id_saidas, id_entradas, pago) values (%s, %s, %s, %s, %s, %s)'
+    input_pagamento = (valor_pagamento, data_format_pagamento,descricao_pagamento, input_id_saidas, input_id_entradas, input_pago)
+    cursor.execute(pagamento_sql, input_pagamento)
+    con.commit()
+    print('valores de saídas inseridos com sucesso!')
+    cursor.close()
+
+def consulta_entradas(con, valor, data, nome, recorrente, id_entradas):
+    cursor = con.cursor()
+    cursor.execute("SELECT * FROM entradas")
     colunas = cursor.fetchall()
     for coluna in colunas:
-        print(valor, 'valor:', coluna[0], 'R$')
-        print(data, coluna[1])
-        print(nome, 'nome:', coluna[2])
-        print(recorrente, coluna[3])
+        print(valor, 'valor R$:', coluna[0], end='')
+        print(data, '|', 'data:', coluna[1], end='')
+        print(nome, '|', 'nome:', coluna[2], end='')
+        print(recorrente, '|', 'recorrente', coluna[3], end='')
+        print(id_entradas, '|', 'ID entradas:', coluna[4], '\n')
+        print('▀' * 95)
 
 
 def consulta_saidas(con, valor, vencimento, nome, recorrente):
@@ -72,30 +90,28 @@ def consulta_todas_saidas(con, valor, vencimento, nome, recorrente, id_saidas):
     cursor.execute(consulta_saidas1)
     colunas = cursor.fetchall()
     for coluna in colunas:
-        print(valor,'valor R$:',coluna[0],end='')
-        print(vencimento,'|','vencimento:',coluna[1],end='')
-        print(nome,'|','nome:',coluna[2],end='')
-        print(recorrente,'|','recorrente:',coluna[3],end='')
-        print(id_saidas,'|','ID saidas:',coluna[4],'\n')
+        print(valor, 'valor R$:', coluna[0], end='')
+        print(vencimento, '|', 'vencimento:', coluna[1], end='')
+        print(nome, '|', 'nome:', coluna[2], end='')
+        print(recorrente, '|', 'recorrente:', coluna[3], end='')
+        print(id_saidas, '|', 'ID saidas:', coluna[4], '\n')
         print('▀' * 95)
 
 
-def insere_pagamento(con, valor, data, descricao, id_saidas, id_entradas, pago):
-    valor_pagamento = float(input('Valor do pagamento: '))
-    data_pagamento = str(input('Data do pagamento: '))
-    data_format_pagamento = datetime.strptime(data_pagamento, '%d-%m-%Y')
-    descricao_pagamento = str(input('Descrição do pagamento: '))
-    input_id_saidas = int(input('ID da saida: '))
-    input_id_entradas = int(input('ID da entrada:'))
-    input_pago = str(input('Pago [sim/nao]: '))
+def consulta_pagamentos(con, valor, data, descricao, id_saidas, id_entradas, pago):
+    id_entrada_pagamento = str(input('Digite o ID da entrada: '))
+    pagamento_sql1 = "SELECT * FROM pagamento WHERE id_entradas=" + id_entrada_pagamento
     cursor = con.cursor()
-    pagamento_sql = 'INSERT INTO pagamento (valor, data, descricao, id_saidas, id_entradas, pago) values (%s, %s, %s, %s, %s, %s)'
-    input_pagamento = (valor_pagamento, data_format_pagamento, descricao_pagamento, input_id_saidas, input_id_entradas,input_pago)
-    cursor.execute(pagamento_sql, input_pagamento)
-    con.commit()
-    print('valores de saídas inseridos com sucesso!')
-    cursor.close()
-    
+    cursor.execute(pagamento_sql1)
+    colunas = cursor.fetchall()
+    for coluna in colunas:
+        print(valor, 'valor R$:', coluna[0], end='')
+        print(data, '|', 'data:', coluna[1], end='')
+        print(descricao, '|', 'descrição:', coluna[2], end='')
+        print(id_saidas, '|', 'recorrente', coluna[3], end='')
+        print(id_entradas, '|', 'ID entradas:', coluna[4], end='')
+        print(pago, '|', 'pago:', coluna[5], '\n')
+        print('▀' * 95)
 
 
 def main():
@@ -105,29 +121,35 @@ def main():
         print('''Digite a opção desejada:
         [1] inserir entradas
         [2] inserir saidas
-        [3] consulta de dados de entrada
-        [4] consulta de dados de saída
+        [3] consultar todas as entradas
+        [4] consultar saidas por nome
         [5] inserir pagamento
         [6] consultar todas as saidas
-        [7] sair do programa
+        [7] consultar pagamentos por ID de entrada
+        [8] sair do programa
         ''')
-        
+
         opcao = int(input('Qual opção você deseja? '))
         if opcao == 1:
             insere_entradas(con, "", "", "", "")
         elif opcao == 2:
             insere_saidas(con, '', '', '', '')
         elif opcao == 3:
-            consulta_entradas(con, '', '', '', '')
+            consulta_entradas(con, '', '', '', '', '')
         elif opcao == 4:
             consulta_saidas(con, '', '', '', '')
         elif opcao == 5:
-            insere_pagamento(con,'','','','','','')
+            insere_pagamento(con, '', '', '', '', '', '')
         elif opcao == 6:
-            consulta_todas_saidas(con,'','','','','')
+            consulta_todas_saidas(con, '', '', '', '', '')
         elif opcao == 7:
+            consulta_pagamentos(con, '', '', '', '', '', '')
+        elif opcao == 8:
             print('Muito Obrigado, volte sempre!')
             break
-            
+
         fechar_conexao(con)
+
+
 if __name__ == "__main__":
+    main()
