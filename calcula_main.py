@@ -1,4 +1,3 @@
-
 import pandas as pd
 from datetime import datetime
 from calcula_conexao import criar_conexao, fechar_conexao
