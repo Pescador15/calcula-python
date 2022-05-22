@@ -120,10 +120,10 @@ def main():
         print('''Digite a opção desejada:
         [1] inserir entradas
         [2] inserir saidas
-        [3] consultar todas as entradas
-        [4] consultar saidas por nome
-        [5] inserir pagamento
-        [6] consultar todas as saidas
+        [3] inserir pagamento
+        [4] consultar entradas
+        [5] consulta todas as saidas
+        [6] consultar saidas pelo nome
         [7] consultar pagamentos por ID de entrada
         [8] sair do programa
         ''')
@@ -134,13 +134,13 @@ def main():
         elif opcao == 2:
             insere_saidas(con, '', '', '', '')
         elif opcao == 3:
-            consulta_entradas(con, '', '', '', '', '')
+            insere_pagamento(con, '', '', '', '', '','')
         elif opcao == 4:
-            consulta_saidas(con, '', '', '', '')
+            consulta_entradas(con, '', '', '', '','')
         elif opcao == 5:
-            insere_pagamento(con, '', '', '', '', '', '')
-        elif opcao == 6:
             consulta_todas_saidas(con, '', '', '', '', '')
+        elif opcao == 6:
+            consulta_saidas(con, '', '', '', '')
         elif opcao == 7:
             consulta_pagamentos(con, '', '', '', '', '', '')
         elif opcao == 8:
