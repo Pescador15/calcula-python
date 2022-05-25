@@ -1,3 +1,4 @@
+
 import pandas as pd
 from datetime import datetime
 from calcula_conexao import criar_conexao, fechar_conexao
@@ -10,9 +11,9 @@ def insere_entradas(con, valor, data, nome, recorrente):
     nome_entradas = str(input('Nome da Entrada: '))
     recorrente_entradas = str(input('Recorrente: ')).strip().upper()
     if recorrente_entradas in 'Ss':
-        recorrente_entradas = 1
+        recorrente_entradas = 'sim'
     else:
-        recorrente_entradas = 0
+        recorrente_entradas = 'nao'
     cursor = con.cursor()
     entradas_sql = "INSERT INTO ENTRADAS (valor, data, nome, recorrente) values (%s, %s, %s, %s)"
     input_entradas = (valor_entradas, data_format,nome_entradas, recorrente_entradas)
@@ -29,9 +30,9 @@ def insere_saidas(con, valor, vencimento, nome, recorrente):
     nome_saida = str(input('Descrição da saida: '))
     recorrente_saida = str(input('recorrente: ')).strip().upper()
     if recorrente_saida in 'sS':
-        recorrente_saida = 1
+        recorrente_saida = 'sim'
     else:
-        recorrente_saida = 0
+        recorrente_saida = 'nao'
     cursor = con.cursor()
     saida_sql = 'INSERT INTO SAIDAS (valor, vencimento, nome, recorrente) values (%s, %s, %s, %s)'
     input_saida = (valor_saida, data_format1, nome_saida, recorrente_saida)
@@ -113,6 +114,16 @@ def consulta_pagamentos(con, valor, data, descricao, id_saidas, id_entradas, pag
         print('▀' * 95)
 
 
+def calculo(con, valor):
+    calculo_input = str(input('ID de entrada para a soma: '))
+    calculo_sql = 'SELECT SUM(valor) FROM pagamento WHERE id_entradas=' + calculo_input 
+    cursor = con.cursor()
+    cursor.execute(calculo_sql)
+    colunas = cursor.fetchall()
+    for coluna in colunas:
+        print(valor,coluna[0])
+
+
 def main():
 
     while True:
@@ -125,7 +136,8 @@ def main():
         [5] consulta todas as saidas
         [6] consultar saidas pelo nome
         [7] consultar pagamentos por ID de entrada
-        [8] sair do programa
+        [8] calculo total
+        [9] sair do programa
         ''')
 
         opcao = int(input('Qual opção você deseja? '))
@@ -144,7 +156,9 @@ def main():
         elif opcao == 7:
             consulta_pagamentos(con, '', '', '', '', '', '')
         elif opcao == 8:
-            print('Muito Obrigado, volte sempre!')
+           calculo(con,'')
+        elif opcao == 9:
+            print('Obrigado, Volte sempre!')
             break
 
         fechar_conexao(con)
