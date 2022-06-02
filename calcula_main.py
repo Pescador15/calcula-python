@@ -1,7 +1,7 @@
-
 import pandas as pd
 from datetime import datetime
 from calcula_conexao import criar_conexao, fechar_conexao
+
 
 
 def insere_entradas(con, valor, data, nome, recorrente):
@@ -108,7 +108,7 @@ def consulta_pagamentos(con, valor, data, descricao, id_saidas, id_entradas, pag
         print(valor, 'valor R$:', coluna[0], end='')
         print(data, '|', 'data:', coluna[1], end='')
         print(descricao, '|', 'descrição:', coluna[2], end='')
-        print(id_saidas, '|', 'recorrente', coluna[3], end='')
+        print(id_saidas, '|', 'ID saidas', coluna[3], end='')
         print(id_entradas, '|', 'ID entradas:', coluna[4], end='')
         print(pago, '|', 'pago:', coluna[5], '\n')
         print('▀' * 95)
@@ -136,7 +136,7 @@ def main():
         [5] consulta todas as saidas
         [6] consultar saidas pelo nome
         [7] consultar pagamentos por ID de entrada
-        [8] calculo total
+        [8] calculo total por ID de entrada
         [9] sair do programa
         ''')
 
@@ -164,5 +164,15 @@ def main():
         fechar_conexao(con)
 
 
+
+
+
+
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
