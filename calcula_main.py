@@ -55,7 +55,7 @@ def insere_pagamento(con, valor, data, descricao, id_saidas, id_entradas, pago):
     input_pagamento = (valor_pagamento, data_format_pagamento,descricao_pagamento, input_id_saidas, input_id_entradas, input_pago)
     cursor.execute(pagamento_sql, input_pagamento)
     con.commit()
-    print('valores de saídas inseridos com sucesso!')
+    print('valores de saídas inseridos com sucessoasdasdad!')
     cursor.close()
 
 def consulta_entradas(con, valor, data, nome, recorrente, id_entradas):
